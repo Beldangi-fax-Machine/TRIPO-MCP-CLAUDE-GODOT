@@ -2,9 +2,9 @@
   "mcpServers": {
     "tripo": {
       "command": "python3",
-      "args": ["/ABSOLUTE/PATH/TO/tripo-mcp/server.py"],
+      "args": ["/absolute/path/to/TRIPO-MCP-CLAUDE-GODOT/server.py"],
       "env": {
-        "TRIPO_API_KEY": "tsk_YOUR_KEY_HERE"
+        "TRIPO_API_KEY": "tsk_YOUR_API_KEY_HERE"
       }
     }
   }
