@@ -15,11 +15,9 @@ All outputs land as game-ready assets in your Godot project.
 """
 
 import asyncio
-import base64
 import json
 import os
 import re
-import sys
 from pathlib import Path
 
 import httpx
@@ -33,13 +31,28 @@ TRIPO_API = "https://api.tripo3d.ai/v2/openapi"
 
 MODEL_VERSIONS = [
     "v2.5-20250123",
+    "v3.0-20250812",
     "Turbo-v1.0-20250506",
+    "v2.0-20240919",
     "default",
 ]
 
 PRESET_ANIMATIONS = [
-    "idle", "walk", "run", "jump", "climb",
-    "slash", "shoot", "hurt", "fall", "turn",
+    # Locomotion
+    "idle", "walk", "run", "jump", "climb", "fall", "turn",
+    # Combat
+    "slash", "shoot", "box_01", "box_02", "box_03", "cast_a_spell", "chop",
+    # Reactions
+    "hurt", "afraid", "angry_01", "angry_02", "angry_03", "cry",
+    # Social
+    "agree", "bow", "clap", "cheer", "wave",
+    "complain_01", "complain_02",
+    # Dance
+    "dance_01", "dance_02", "dance_03", "dance_04", "dance_05", "dance_06",
+    # Sports
+    "basketball_shot", "crossover_dribble",
+    # Sitting
+    "sit",
 ]
 
 STYLIZE_STYLES = [
@@ -216,6 +229,21 @@ TOOLS = [
                     "type": "string",
                     "description": "Optional style hint for generation",
                     "default": "",
+                },
+                "texture_quality": {
+                    "type": "string",
+                    "description": "Texture quality: 'standard' or 'high'",
+                    "default": "standard",
+                },
+                "auto_size": {
+                    "type": "boolean",
+                    "description": "Auto-scale to real-world dimensions (meters)",
+                    "default": False,
+                },
+                "geometry_quality": {
+                    "type": "string",
+                    "description": "Geometry quality: 'standard' or 'detailed' (v3.0 Ultra, up to 2M polys)",
+                    "default": "standard",
                 },
                 "output_dir": {
                     "type": "string",
@@ -643,6 +671,10 @@ async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
         output_dir = Path(arguments.get("output_dir", "./models"))
         fname = arguments.get("filename", "") or _safe_filename(prompt)
 
+        tex_quality = arguments.get("texture_quality", "standard")
+        auto_size = arguments.get("auto_size", False)
+        geo_quality = arguments.get("geometry_quality", "standard")
+
         payload = {
             "type": "text_to_model",
             "prompt": prompt,
@@ -651,6 +683,12 @@ async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
         }
         if style:
             payload["style"] = style
+        if tex_quality and tex_quality != "standard":
+            payload["texture_quality"] = tex_quality
+        if auto_size:
+            payload["auto_size"] = True
+        if geo_quality and geo_quality != "standard":
+            payload["geometry_quality"] = geo_quality
 
         async with httpx.AsyncClient(timeout=30) as client:
             r = await client.post(

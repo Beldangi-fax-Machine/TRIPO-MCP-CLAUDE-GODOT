@@ -80,6 +80,7 @@ The `tripo-godot-mcp` server will appear in your available MCP tools.
 
 ## Available Preset Animations
 
+### Locomotion
 | Animation | Description |
 |-----------|-------------|
 | `idle` | Standing idle loop |
@@ -87,11 +88,46 @@ The `tripo-godot-mcp` server will appear in your available MCP tools.
 | `run` | Run cycle |
 | `jump` | Jump motion |
 | `climb` | Climbing motion |
-| `slash` | Melee attack swing |
-| `shoot` | Ranged attack |
-| `hurt` | Hit reaction |
 | `fall` | Falling motion |
 | `turn` | Turning in place |
+
+### Combat
+| Animation | Description |
+|-----------|-------------|
+| `slash` | Melee attack swing |
+| `shoot` | Ranged attack |
+| `chop` | Chopping motion |
+| `cast_a_spell` | Magic casting |
+| `box_01` / `box_02` / `box_03` | Boxing combos |
+
+### Reactions & Emotions
+| Animation | Description |
+|-----------|-------------|
+| `hurt` | Hit reaction |
+| `afraid` | Fear reaction |
+| `angry_01` / `angry_02` / `angry_03` | Anger variations |
+| `cry` | Crying |
+| `complain_01` / `complain_02` | Complaining |
+
+### Social & Gestures
+| Animation | Description |
+|-----------|-------------|
+| `agree` | Nodding agreement |
+| `bow` | Bowing |
+| `clap` | Clapping |
+| `cheer` | Cheering |
+| `wave` | Waving |
+
+### Dance
+| Animation | Description |
+|-----------|-------------|
+| `dance_01` through `dance_06` | Six dance styles |
+
+### Sports
+| Animation | Description |
+|-----------|-------------|
+| `basketball_shot` | Basketball shot |
+| `crossover_dribble` | Crossover dribble |
 
 ## Available Styles
 
@@ -200,9 +236,13 @@ Save everything to ./game/assets/enemies/dragon/
 
 ## Model Versions
 
-- **`v2.5-20250123`** — Best quality, enhanced geometry and realistic textures (default)
-- **`Turbo-v1.0-20250506`** — Faster generation, good for iteration
-- **`default`** — Latest stable version
+| Version | Notes |
+|---------|-------|
+| `v2.5-20250123` | Balanced quality and speed, enhanced geometry (default) |
+| `v3.0-20250812` | Latest. Crisper edges, sharper surfaces. Supports `geometry_quality: "detailed"` for up to 2M polys |
+| `Turbo-v1.0-20250506` | Fastest generation, good for rapid iteration |
+| `v2.0-20240919` | Industry-leading geometry with PBR |
+| `default` | Latest stable version |
 
 ## Project Structure
 
